@@ -1,52 +1,75 @@
-import { useState, useEffect } from 'react';
-import { ArrowRight, BookMarked, Users, BookOpen, Star, Clock, Heart, Eye, TrendingUp, ChevronRight } from 'lucide-react';
-import { Link } from 'react-router';
-import TrendingCategories from '../components/TrendingCategories';
+import { useState, useEffect } from "react";
+import {
+  ArrowRight,
+  BookMarked,
+  Users,
+  BookOpen,
+  Star,
+  Clock,
+  Heart,
+  Eye,
+  TrendingUp,
+  ChevronRight,
+} from "lucide-react";
+import { Link } from "react-router";
+import Categories from "../components/Categories";
 
 // -------------------------------------------------------------
 // Mock Data
 // -------------------------------------------------------------
 const MOCK_STATS = {
   totalUsers: 1250,
-  totalPosts: 8430
+  totalPosts: 8430,
 };
 
 const MOCK_CATEGORIES = [
-  { id: 1, name: 'คณิตศาสตร์', views: 4520 },
-  { id: 2, name: 'ภาษาอังกฤษ', views: 3890 },
-  { id: 3, name: 'วิทยาศาสตร์', views: 3200 },
-  { id: 4, name: 'สังคมศึกษา', views: 2850 },
-  { id: 5, name: 'ภาษาไทย', views: 2100 },
-  { id: 6, name: 'ฟิสิกส์', views: 1950 }
+  { id: 1, name: "คณิตศาสตร์", views: 4520 },
+  { id: 2, name: "ภาษาอังกฤษ", views: 3890 },
+  { id: 3, name: "วิทยาศาสตร์", views: 3200 },
+  { id: 4, name: "สังคมศึกษา", views: 2850 },
+  { id: 5, name: "ภาษาไทย", views: 2100 },
+  { id: 6, name: "ฟิสิกส์", views: 1950 },
 ];
 
 // Generate mock posts
 const generateMockPosts = () => {
-  const subjects = ['คณิตศาสตร์', 'ภาษาอังกฤษ', 'วิทยาศาสตร์', 'สังคมศึกษา', 'ชีววิทยา', 'เคมี'];
-  const categories = ['MIDDLE_SCHOOL', 'HIGH_SCHOOL', 'UNIVERSITY'];
-  
-  return Array.from({ length: 24 }).map((_, i) => ({
-    id: i + 1,
-    title: `สรุปเนื้อหาบทเรียนฉบับเตรียมสอบ (ชุดที่ ${i + 1}) อ่านเข้าใจง่าย`,
-    author: `นักเรียนดีเด่น ${i % 5 + 1}`,
-    category: categories[i % 3],
-    subject: subjects[i % 6],
-    likes: Math.floor(Math.random() * 500) + 10,
-    views: Math.floor(Math.random() * 2000) + 100,
-    date: new Date(Date.now() - Math.random() * 1000 * 60 * 60 * 24 * 7).toISOString()
-  })).sort((a, b) => new Date(b.date) - new Date(a.date));
+  const subjects = [
+    "คณิตศาสตร์",
+    "ภาษาอังกฤษ",
+    "วิทยาศาสตร์",
+    "สังคมศึกษา",
+    "ชีววิทยา",
+    "เคมี",
+  ];
+  const categories = ["MIDDLE_SCHOOL", "HIGH_SCHOOL", "UNIVERSITY"];
+
+  return Array.from({ length: 24 })
+    .map((_, i) => ({
+      id: i + 1,
+      title: `สรุปเนื้อหาบทเรียนฉบับเตรียมสอบ (ชุดที่ ${i + 1}) อ่านเข้าใจง่าย`,
+      author: `นักเรียนดีเด่น ${(i % 5) + 1}`,
+      category: categories[i % 3],
+      subject: subjects[i % 6],
+      likes: Math.floor(Math.random() * 500) + 10,
+      views: Math.floor(Math.random() * 2000) + 100,
+      date: new Date(
+        Date.now() - Math.random() * 1000 * 60 * 60 * 24 * 7,
+      ).toISOString(),
+    }))
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
 };
 
 const MOCK_POSTS = generateMockPosts();
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState('ALL');
+  const [activeTab, setActiveTab] = useState("ALL");
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 8;
 
-  const filteredPosts = activeTab === 'ALL' 
-    ? MOCK_POSTS 
-    : MOCK_POSTS.filter(p => p.category === activeTab);
+  const filteredPosts =
+    activeTab === "ALL"
+      ? MOCK_POSTS
+      : MOCK_POSTS.filter((p) => p.category === activeTab);
 
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
   const indexOfLastPost = currentPage * postsPerPage;
@@ -60,13 +83,14 @@ export default function Home() {
 
   useEffect(() => {
     if (currentPage > 1) {
-      document.getElementById('latest-posts-section')?.scrollIntoView({ behavior: 'smooth' });
+      document
+        .getElementById("latest-posts-section")
+        ?.scrollIntoView({ behavior: "smooth" });
     }
   }, [currentPage]);
 
   return (
     <main className="min-h-screen bg-background">
-      
       {/* =========================================
           HERO SECTION (Clean, Premium Aesthetic)
           ========================================= */}
@@ -83,29 +107,42 @@ export default function Home() {
               <span className="flex h-2 w-2 rounded-full bg-primary"></span>
               แพลตฟอร์มการเรียนรู้รูปแบบใหม่
             </div>
-            
+
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 tracking-tight mb-6 leading-tight animate-in fade-in slide-in-from-bottom-8 duration-700 delay-150">
-              ยินดีต้อนรับสู่ <br className="hidden lg:block"/>
+              ยินดีต้อนรับสู่ <br className="hidden lg:block" />
               <span className="text-primary">SHARE-ED</span>
             </h1>
-            
+
             <p className="mt-4 text-lg sm:text-xl text-slate-500 mb-10 leading-relaxed max-w-lg animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
-              พื้นที่สำหรับการแบ่งปันความรู้ อ่านสรุปเนื้อหาบทเรียน และเตรียมพร้อมสำหรับการสอบไปกับเพื่อนๆ ทั่วประเทศ
+              พื้นที่สำหรับการแบ่งปันความรู้ อ่านสรุปเนื้อหาบทเรียน
+              และเตรียมพร้อมสำหรับการสอบไปกับเพื่อนๆ ทั่วประเทศ
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-500">
               <div className="flex items-center gap-4 bg-white/80 backdrop-blur-sm px-6 py-4 rounded-2xl border border-slate-200 shadow-sm flex-1 w-full sm:w-auto">
-                <div className="p-3 bg-blue-50 rounded-xl text-primary"><Users className="h-6 w-6" /></div>
+                <div className="p-3 bg-blue-50 rounded-xl text-primary">
+                  <Users className="h-6 w-6" />
+                </div>
                 <div className="text-left">
-                  <p className="text-2xl font-black text-slate-900 leading-none mb-1">{MOCK_STATS.totalUsers.toLocaleString()}</p>
-                  <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">ผู้ใช้งานระบบ</p>
+                  <p className="text-2xl font-black text-slate-900 leading-none mb-1">
+                    {MOCK_STATS.totalUsers.toLocaleString()}
+                  </p>
+                  <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">
+                    ผู้ใช้งานระบบ
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-4 bg-white/80 backdrop-blur-sm px-6 py-4 rounded-2xl border border-slate-200 shadow-sm flex-1 w-full sm:w-auto">
-                <div className="p-3 bg-blue-50 rounded-xl text-primary"><BookMarked className="h-6 w-6" /></div>
+                <div className="p-3 bg-blue-50 rounded-xl text-primary">
+                  <BookMarked className="h-6 w-6" />
+                </div>
                 <div className="text-left">
-                  <p className="text-2xl font-black text-slate-900 leading-none mb-1">{MOCK_STATS.totalPosts.toLocaleString()}</p>
-                  <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">โพสต์สรุป</p>
+                  <p className="text-2xl font-black text-slate-900 leading-none mb-1">
+                    {MOCK_STATS.totalPosts.toLocaleString()}
+                  </p>
+                  <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">
+                    โพสต์สรุป
+                  </p>
                 </div>
               </div>
             </div>
@@ -116,9 +153,9 @@ export default function Home() {
             <div className="aspect-[4/3] rounded-3xl overflow-hidden bg-slate-100 border border-slate-200 shadow-2xl shadow-primary/10 relative group">
               <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent mix-blend-multiply opacity-50 transition-opacity group-hover:opacity-30"></div>
               {/* Replace img src with real promo image when available */}
-              <img 
-                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1000&auto=format&fit=crop" 
-                alt="Student learning" 
+              <img
+                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1000&auto=format&fit=crop"
+                alt="Student learning"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               {/* Floating Badge */}
@@ -127,8 +164,12 @@ export default function Home() {
                   <Star className="h-5 w-5 fill-current" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-slate-500 uppercase tracking-wide">รีวิวจากผู้ใช้</p>
-                  <p className="text-sm font-bold text-slate-900">4.9/5 คะแนน</p>
+                  <p className="text-xs font-bold text-slate-500 uppercase tracking-wide">
+                    รีวิวจากผู้ใช้
+                  </p>
+                  <p className="text-sm font-bold text-slate-900">
+                    4.9/5 คะแนน
+                  </p>
                 </div>
               </div>
             </div>
@@ -139,44 +180,59 @@ export default function Home() {
       {/* =========================================
           CATEGORIES SECTION (Extracted to Component)
           ========================================= */}
-      <TrendingCategories />
+      <categories />
 
       {/* =========================================
           LATEST POSTS SECTION
           ========================================= */}
-      <section id="latest-posts-section" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section
+        id="latest-posts-section"
+        className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+      >
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-10 gap-6">
           <div>
             <h2 className="text-3xl font-extrabold text-slate-900 flex items-center gap-3">
               <Clock className="h-7 w-7 text-primary" /> โพสต์อัปเดตล่าสุด
             </h2>
-            <p className="text-slate-500 mt-2 text-lg">เนื้อหาใหม่ล่าสุดที่เพื่อนๆ เพิ่งแบ่งปัน</p>
+            <p className="text-slate-500 mt-2 text-lg">
+              เนื้อหาใหม่ล่าสุดที่เพื่อนๆ เพิ่งแบ่งปัน
+            </p>
           </div>
-          
+
           {/* Minimal Tabs */}
           <div className="flex overflow-x-auto pb-2 lg:pb-0 gap-2 hide-scrollbar">
-            {['ALL', 'MIDDLE_SCHOOL', 'HIGH_SCHOOL', 'UNIVERSITY'].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => handleTabChange(tab)}
-                className={`px-6 py-2.5 rounded-full font-bold text-sm whitespace-nowrap transition-all ${
-                  activeTab === tab 
-                    ? 'bg-slate-900 text-white shadow-md' 
-                    : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:text-slate-900'
-                }`}
-              >
-                {tab === 'ALL' ? 'ทั้งหมด' : 
-                 tab === 'MIDDLE_SCHOOL' ? 'มัธยมศึกษาตอนต้น' :
-                 tab === 'HIGH_SCHOOL' ? 'มัธยมศึกษาตอนปลาย' : 'มหาวิทยาลัย'}
-              </button>
-            ))}
+            {["ALL", "MIDDLE_SCHOOL", "HIGH_SCHOOL", "UNIVERSITY"].map(
+              (tab) => (
+                <button
+                  key={tab}
+                  onClick={() => handleTabChange(tab)}
+                  className={`px-6 py-2.5 rounded-full font-bold text-sm whitespace-nowrap transition-all ${
+                    activeTab === tab
+                      ? "bg-slate-900 text-white shadow-md"
+                      : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:text-slate-900"
+                  }`}
+                >
+                  {tab === "ALL"
+                    ? "ทั้งหมด"
+                    : tab === "MIDDLE_SCHOOL"
+                      ? "มัธยมศึกษาตอนต้น"
+                      : tab === "HIGH_SCHOOL"
+                        ? "มัธยมศึกษาตอนปลาย"
+                        : "มหาวิทยาลัย"}
+                </button>
+              ),
+            )}
           </div>
         </div>
 
         {/* 4 Columns Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {currentPosts.map(post => (
-            <Link key={post.id} to={`/post/${post.id}`} className="bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-xl hover:shadow-primary/5 hover:border-primary/30 hover:-translate-y-1 transition-all flex flex-col group h-full">
+          {currentPosts.map((post) => (
+            <Link
+              key={post.id}
+              to={`/post/${post.id}`}
+              className="bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-xl hover:shadow-primary/5 hover:border-primary/30 hover:-translate-y-1 transition-all flex flex-col group h-full"
+            >
               <div className="h-44 bg-slate-50 relative overflow-hidden flex items-center justify-center border-b border-slate-100">
                 <BookOpen className="h-12 w-12 text-slate-300 group-hover:scale-110 group-hover:text-primary/40 transition-all duration-500" />
                 <div className="absolute top-3 left-3 bg-white/90 backdrop-blur text-xs font-bold px-3 py-1.5 rounded-lg text-slate-700 shadow-sm">
@@ -195,11 +251,18 @@ export default function Home() {
                 </p>
                 <div className="flex justify-between items-center pt-4 border-t border-slate-100">
                   <div className="flex items-center gap-3 text-sm text-slate-500 font-semibold">
-                    <span className="flex items-center gap-1 hover:text-primary transition-colors"><Heart className="h-4 w-4" /> {post.likes}</span>
-                    <span className="flex items-center gap-1 hover:text-primary transition-colors"><Eye className="h-4 w-4" /> {post.views}</span>
+                    <span className="flex items-center gap-1 hover:text-primary transition-colors">
+                      <Heart className="h-4 w-4" /> {post.likes}
+                    </span>
+                    <span className="flex items-center gap-1 hover:text-primary transition-colors">
+                      <Eye className="h-4 w-4" /> {post.views}
+                    </span>
                   </div>
                   <span className="text-xs text-slate-400 font-semibold">
-                    {new Date(post.date).toLocaleDateString('th-TH', { month: 'short', day: 'numeric' })}
+                    {new Date(post.date).toLocaleDateString("th-TH", {
+                      month: "short",
+                      day: "numeric",
+                    })}
                   </span>
                 </div>
               </div>
@@ -211,7 +274,9 @@ export default function Home() {
         {currentPosts.length === 0 && (
           <div className="text-center py-24 bg-white rounded-2xl border border-slate-200 border-dashed">
             <BookOpen className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-            <h3 className="text-lg font-bold text-slate-700 mb-1">ไม่มีโพสต์ในหมวดหมู่นี้</h3>
+            <h3 className="text-lg font-bold text-slate-700 mb-1">
+              ไม่มีโพสต์ในหมวดหมู่นี้
+            </h3>
             <p className="text-slate-500">เนื้อหาใหม่กำลังจะมาในเร็วๆ นี้</p>
           </div>
         )}
@@ -219,23 +284,23 @@ export default function Home() {
         {/* Pagination Controls */}
         {totalPages > 1 && (
           <div className="mt-14 flex justify-center items-center gap-2">
-            <button 
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
               className="px-4 py-2 rounded-xl border border-slate-200 bg-white font-bold text-slate-600 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 hover:text-primary transition-colors"
             >
               ก่อนหน้า
             </button>
-            
+
             <div className="flex gap-1 hidden sm:flex mx-2">
               {Array.from({ length: totalPages }).map((_, i) => (
                 <button
                   key={i}
                   onClick={() => setCurrentPage(i + 1)}
                   className={`w-10 h-10 rounded-xl font-bold transition-all shadow-sm ${
-                    currentPage === i + 1 
-                      ? 'bg-slate-900 text-white' 
-                      : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:text-primary'
+                    currentPage === i + 1
+                      ? "bg-slate-900 text-white"
+                      : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:text-primary"
                   }`}
                 >
                   {i + 1}
@@ -243,8 +308,10 @@ export default function Home() {
               ))}
             </div>
 
-            <button 
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            <button
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
               disabled={currentPage === totalPages}
               className="px-4 py-2 rounded-xl border border-slate-200 bg-white font-bold text-slate-600 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 hover:text-primary transition-colors"
             >
